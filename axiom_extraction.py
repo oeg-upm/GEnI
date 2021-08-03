@@ -7,55 +7,6 @@ from scipy.spatial import distance
 import scipy.cluster.hierarchy as sph
 from fcmeans import FCM
 
-def get_hierarchical_clusters(embeddings,type):
-    rels = np.array(list(embeddings.values()))
-    if type == 'semantic':
-        pca_rels = []
-        pca = PCA(n_components=1)
-        for r in rels:
-            pca_rels.append(np.squeeze(pca.fit_transform(r.reshape(-1, 1))))
-        rels = np.array(pca_rels)
-    pdist = sph.distance.pdist(rels, metric='euclidean')
-    linkage = sph.linkage(pdist, method='complete')
-    c_labels = sph.fcluster(linkage, 0.2 * rels.shape[0], 'maxclust')
-    return c_labels
-
-def get_optimal_clusters(max_k,embeddings,type):
-    rels = np.array(list(embeddings.values()))
-    if type == 'semantic':
-        pca_rels = []
-        pca = PCA(n_components=1)
-        for r in rels:
-            pca_rels.append(np.squeeze(pca.fit_transform(r.reshape(-1,1))))
-        rels = np.array(pca_rels)
-    fcm=FCM(max_k)
-    fcm.fit(rels)
-    labels=fcm.predict(rels)
-    return labels
-
-
-def get_clusters(k,embeddings,current_rel,type):
-    labels=list(embeddings.keys())
-    rels=np.array(list(embeddings.values()))
-    if type=='semantic':
-        pca_rels=[]
-        pca=PCA(n_components=1)
-        for r in rels:
-            pca_rels.append(np.squeeze(pca.fit_transform(r)))
-        rels=np.array(pca_rels)
-    n_clusters=int(len(labels)/k)
-    kmeans_model=MiniBatchKMeans(init='k-means++',n_clusters=n_clusters,n_init=3)
-    kmeans_model.fit(rels)
-    c_labels=kmeans_model.labels_
-    idx=labels.index(current_rel)
-    current_cluster_idx=c_labels[idx]
-    curr_cluster=[]
-    for c,i in enumerate(c_labels):
-        if i==current_cluster_idx:curr_cluster.append(labels[c])
-    curr_cluster.remove(current_rel)
-    return curr_cluster
-
-
 def _get_symmetric(th_value,embeddings, current_rel,type):
     curr_emb=embeddings[current_rel]
     curr_emb = curr_emb.astype(np.float64)

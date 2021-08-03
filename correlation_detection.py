@@ -11,13 +11,7 @@ def find_entity_correlations(cur_ent,ent_dict,ent_matrixes,c_labels,th_value):
         if abs(corr) <= th_value:
             corrs.append((s,corr))
     return corrs
-def get_entity_clusters(ent_embeddings):
-    corr= np.array(list(ent_embeddings.values()))
-    pdist = sph.distance.pdist(corr, metric='euclidean')
-    linkage = sph.linkage(pdist,method='complete')
-    c_labels=sph.fcluster(linkage,0.5*corr.shape[0],'maxclust')
-    del corr, pdist,linkage
-    return c_labels
+
 
 def find_direct_correlations(cur_ent,cur_rel,corrs,rel_embeddings,ent_embeddings,type,th_value):
     rel_matrix = np.array(list(rel_embeddings.values()))
