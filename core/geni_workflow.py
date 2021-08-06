@@ -1,22 +1,23 @@
 from core import utils, axiom_extraction, influence_detection, correlation_detection
-from core.utils import *
 import operator
+import os
+import numpy as np
 
 def prepare_geni_data(model_dataset,model_name,prefix,user_th_value,tmp):
     print('[PREPROCESSING: CURRENT STEP] Loading data model')
-    rel_dict, ent_dict, known_facts, validation_facts, type = load_dataset(model_dataset, model_name, tmp)
+    rel_dict, ent_dict, known_facts, validation_facts, type = utils.load_dataset(model_dataset, model_name, tmp)
     print('[PREPROCESSING: CURRENT STEP] Generating relation clusters')
     if os.path.exists(os.path.join('datasets', prefix+model_dataset, prefix+model_dataset + '_' + model_name + '_r_labels.pkl')):
-        r_labels = load_obj(os.path.join('datasets', prefix+model_dataset, prefix+model_dataset + '_' + model_name + '_r_labels'))
+        r_labels = utils.load_obj(os.path.join('datasets', prefix+model_dataset, prefix+model_dataset + '_' + model_name + '_r_labels'))
     else:
-        r_labels = get_optimal_clusters(int(len(rel_dict.keys()) / 2), rel_dict, type)
-        save_obj(r_labels, os.path.join('datasets', prefix+model_dataset, prefix+model_dataset + '_' + model_name + '_r_labels'))
+        r_labels = utils.get_optimal_clusters(int(len(rel_dict.keys()) / 2), rel_dict, type)
+        utils.save_obj(r_labels, os.path.join('datasets', prefix+model_dataset, prefix+model_dataset + '_' + model_name + '_r_labels'))
     print('[PREPROCESSING: CURRENT STEP] Generating entity clusters')
     if os.path.exists(os.path.join('datasets', prefix+model_dataset, prefix+model_dataset + '_' + model_name + '_e_labels.pkl')):
-        e_clusters = load_obj(os.path.join('datasets', prefix+model_dataset, prefix+model_dataset + '_' + model_name + '_e_labels'))
+        e_clusters = utils.load_obj(os.path.join('datasets', prefix+model_dataset, prefix+model_dataset + '_' + model_name + '_e_labels'))
     else:
-        e_clusters = get_entity_clusters(ent_dict)
-        save_obj(e_clusters, os.path.join('datasets', prefix+model_dataset, prefix+model_dataset + '_' + model_name + '_e_labels'))
+        e_clusters = utils.get_entity_clusters(ent_dict)
+        utils.save_obj(e_clusters, os.path.join('datasets', prefix+model_dataset, prefix+model_dataset + '_' + model_name + '_e_labels'))
     TH_MAX = abs(np.max(np.array(list(ent_dict.values()))) - np.min(np.array(list(ent_dict.values()))))
     th_value = TH_MAX + (1 - user_th_value) * TH_MAX
     return rel_dict,ent_dict,known_facts,validation_facts,type,th_value,e_clusters,r_labels
