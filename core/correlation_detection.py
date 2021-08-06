@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.cluster.hierarchy as sph
 from fastdist import fastdist
-from utils import get_clustered_elements
+from core.utils import get_clustered_elements
 
 def find_entity_correlations(cur_ent,ent_dict,ent_matrixes,c_labels,th_value):
     search_space = get_clustered_elements(c_labels, ent_dict, cur_ent)

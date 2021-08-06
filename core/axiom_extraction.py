@@ -1,11 +1,7 @@
-from sklearn.cluster import MiniBatchKMeans
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from itertools import permutations
-from sklearn.decomposition import PCA
 from scipy.spatial import distance
-import scipy.cluster.hierarchy as sph
-from fcmeans import FCM
 
 def _get_symmetric(th_value,embeddings, current_rel,type):
     curr_emb=embeddings[current_rel]
