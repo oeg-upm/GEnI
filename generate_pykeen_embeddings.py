@@ -80,7 +80,7 @@ if __name__ == '__main__':
                                             "-> \'o\' for object (tail) predictions\n"
                                             "-> \'s\' for subject (head) predictions\n"
                                             "-> \'b\' for both.\n"
-                                            "If no value is specified, object predictions are computed by default")
+                                            "If no value is specified, both predictions are computed by default")
     parser.add_argument('--tmp',
                         help="Whether the generated data is permanently stored or deleted once processed. It unspecified, data is stored permantently",
                         action="store_true")
@@ -105,7 +105,7 @@ if __name__ == '__main__':
     tmp = args.tmp
     goal=args.goal
     if not goal:
-        goal='o'
+        goal='b'
     elif goal not in ['s','o','b']:
         parser.error("There are only 3 possible values: o (object), s (subject) and b (both).")
 

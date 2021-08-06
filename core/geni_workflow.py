@@ -39,7 +39,7 @@ def _phase_1(h,cur_rel,t,r_labels,rel_dict,known_facts,type,th_value):
             if trig_rules['transitive']:
                 rules = [('rules', 'transitive', trig_rules['transitive'])]
                 print('[SUCCESS!] The relation %s is transitive, so your fact can be inferred based on the known'
-                      'facts (%s,%s,%s) ^ (%s,%s,%s) -> (%s,%s,%s)' % (
+                      ' facts (%s,%s,%s) ^ (%s,%s,%s) -> (%s,%s,%s)' % (
                       cur_rel, h, cur_rel, trig_rules['transitive'][0], trig_rules['transitive'][0]
                       , cur_rel, t, h, cur_rel, t))
 
