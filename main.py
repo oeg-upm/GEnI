@@ -20,8 +20,8 @@ if __name__=='__main__':
     model_dataset=args.dataset
     model_name=args.model
     user_th=args.threshold
-    fact=args.model
-    all=args.model
+    fact=args.fact
+    all=args.all
     goal=args.goal
     tmp=args.tmp
     save=args.save
