@@ -72,7 +72,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', '-d', help="Indicate a dataset to work with")
     parser.add_argument('--model', '-m', help="Indicate a valid KGE model")
-    parser.add_argument('--epochs', '-e', help="Number of training epochs", type=int)
+    parser.add_argument('--epochs', '-e', help="Number of training epochs. If unspecified, it uses 100 by default", type=int)
     parser.add_argument('--dim', help="Embedding dimension. If unspecified, it uses 100 by default", type=int)
     parser.add_argument('--split', help="Training/Test/Validation split ratios. If unspecified, it uses 0.8 0.1 0.1",
                         nargs='+', type=float)
@@ -88,9 +88,11 @@ if __name__ == '__main__':
     dataset = args.dataset
     model = args.model
     epochs = args.epochs
-    if dataset is None or model is None or epochs is None:
+    if dataset is None or model is None:
         parser.error("It is required to specify a dataset, a model and a number of epochs for training")
         exit(1)
+    if not epochs:
+        epochs=100
     dim = args.dim
     if dim is None:
         dim = 100
