@@ -3,7 +3,6 @@ from core import geni_workflow
 from core.utils import *
 import argparse
 
-
 if __name__=='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', '-d', help="Indicate a dataset to work with")

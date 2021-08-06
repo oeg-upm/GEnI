@@ -1,13 +1,12 @@
 import numpy as np
-import scipy.cluster.hierarchy as sph
 from fastdist import fastdist
 from core.utils import get_clustered_elements
 
-def find_entity_correlations(cur_ent,ent_dict,ent_matrixes,c_labels,th_value):
+def find_entity_correlations(cur_ent,ent_dict,c_labels,th_value):
     search_space = get_clustered_elements(c_labels, ent_dict, cur_ent)
     corrs=[]
     for s in search_space:
-        corr=fastdist.euclidean(ent_matrixes[cur_ent],ent_matrixes[s])
+        corr=fastdist.euclidean(ent_dict[cur_ent],ent_dict[s])
         if abs(corr) <= th_value:
             corrs.append((s,corr))
     return corrs

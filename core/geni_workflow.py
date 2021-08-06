@@ -62,10 +62,9 @@ def _phase_1(h,cur_rel,t,r_labels,rel_dict,known_facts,type,th_value):
     return rules
 
 def _phase_2(h,cur_rel,t,goal,ent_dict,rel_dict,e_clusters,known_facts,type,th_value):
-    ent_matrixes=np.array(ent_dict.values())
     correlations=None
-    head_corrs = correlation_detection.find_entity_correlations(h, ent_dict, ent_matrixes, e_clusters, th_value)
-    tail_corrs = correlation_detection.find_entity_correlations(t, ent_dict, ent_matrixes, e_clusters, th_value)
+    head_corrs = correlation_detection.find_entity_correlations(h, ent_dict, e_clusters, th_value)
+    tail_corrs = correlation_detection.find_entity_correlations(t, ent_dict, e_clusters, th_value)
     if goal == 'o':
         direct_correlations = correlation_detection.find_direct_correlations(t, cur_rel, tail_corrs, rel_dict,
                                                                              ent_dict, type, th_value)
