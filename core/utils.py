@@ -100,6 +100,6 @@ def load_dataset(dataset_name,model_name,tmp=False):
         quit(1)
     if type == 'semantic':
         rels = {k: np.diag(v) for k, v in rels.items()}
-    known_facts = load_obj(os.path.join('../datasets', prefix+dataset_name, prefix+dataset_name+ '_' + model_name + + '_known_facts'))
+    known_facts = load_obj(os.path.join('datasets', prefix+dataset_name, prefix+dataset_name+ '_' + model_name + '_known_facts'))
     return rels, ents, known_facts, preds, type
 
