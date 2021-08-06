@@ -149,6 +149,7 @@ def predict_all(model_dataset,model_name,user_th,prefix,tmp):
             goal = f[0]
             h = f[1]
             t = f[2]
+            print('--->CURRENT FACT: (%s,%s,%s)' % (h, cur_rel, t))
             fact_explaination[(goal, h, cur_rel, t)]=_generate_insight(h,cur_rel,t,goal,ent_dict,e_clusters,
                                                                        rel_dict,r_labels,known_facts,type,th_value)
     return fact_explaination
