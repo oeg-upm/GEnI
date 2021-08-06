@@ -96,7 +96,7 @@ def load_dataset(dataset_name,model_name,tmp=False):
         elif model_name in MODEL_DICT['translation']:
             type = 'translation'
     except:
-        print('Your model is not supported by the framework')
+        print('[ERROR!] Your model is not supported by the framework')
         quit(1)
     if type == 'semantic':
         rels = {k: np.diag(v) for k, v in rels.items()}

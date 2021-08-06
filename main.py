@@ -11,7 +11,7 @@ if __name__=='__main__':
     parser.add_argument('--threshold','-th', help="User threshold value. Default value is 0.6 ",type=float)
     parser.add_argument('--fact','-f', help="Explain a single prediction in the format h r t ",nargs='+')
     parser.add_argument('--goal','-g',help="s if the head entity is predicted, o if the tail entity is predicted. Default value is o")
-    parser.add_argument('--all', help="Explain all stored predictions")
+    parser.add_argument('--all', help="Explain all stored predictions", action="store_true")
     parser.add_argument('--save','-s',help="Save final results", action="store_true")
     parser.add_argument('--tmp',
                         help="Whether the generated data is permanently stored or deleted once processed. It unspecified, data is stored permantently",
