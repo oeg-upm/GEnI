@@ -83,9 +83,9 @@ def get_clusters(k,embeddings,current_rel,type):
 def load_dataset(dataset_name,model_name,tmp=False):
     MODEL_DICT = {'semantic': ['ComplEx', 'DistMult', 'HolE', 'ANALOGY', 'SimplE', 'TuckER'],
                   'translation': ['TransE', 'TransH', 'TransR', 'TransD']}
-    rels = load_obj(os.path.join('datasets', dataset_name, dataset_name + '_' + model_name + '_relations'))
-    ents = load_obj(os.path.join('datasets', dataset_name, dataset_name + '_' + model_name + '_entities'))
-    preds = load_obj(os.path.join('datasets', dataset_name, dataset_name + '_' + model_name + '_predictions'))
+    rels = load_obj(os.path.join('../datasets', dataset_name, dataset_name + '_' + model_name + '_relations'))
+    ents = load_obj(os.path.join('../datasets', dataset_name, dataset_name + '_' + model_name + '_entities'))
+    preds = load_obj(os.path.join('../datasets', dataset_name, dataset_name + '_' + model_name + '_predictions'))
     try:
         if model_name in MODEL_DICT['semantic']:
             type = 'semantic'
@@ -96,5 +96,6 @@ def load_dataset(dataset_name,model_name,tmp=False):
         quit(1)
     if type == 'semantic':
         rels = {k: np.diag(v) for k, v in rels.items()}
-    known_facts = load_obj(os.path.join('datasets', dataset_name, dataset_name + '_known_facts'))
+    known_facts = load_obj(os.path.join('../datasets', dataset_name, dataset_name + '_known_facts'))
     return rels, ents, known_facts, preds, type
+
