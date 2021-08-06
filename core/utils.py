@@ -87,9 +87,9 @@ def load_dataset(dataset_name,model_name,tmp=False):
         prefix='tmp_'
     else:
         prefix=''
-    rels = load_obj(os.path.join('../datasets', prefix+dataset_name, prefix+dataset_name + '_' + model_name + '_relations'))
-    ents = load_obj(os.path.join('../datasets', prefix+dataset_name, prefix+dataset_name + '_' + model_name + '_entities'))
-    preds = load_obj(os.path.join('../datasets', prefix+dataset_name, prefix+dataset_name + '_' + model_name + '_predictions'))
+    rels = load_obj(os.path.join('datasets', prefix+dataset_name, prefix+dataset_name + '_' + model_name + '_relations'))
+    ents = load_obj(os.path.join('datasets', prefix+dataset_name, prefix+dataset_name + '_' + model_name + '_entities'))
+    preds = load_obj(os.path.join('datasets', prefix+dataset_name, prefix+dataset_name + '_' + model_name + '_predictions'))
     try:
         if model_name in MODEL_DICT['semantic']:
             type = 'semantic'
