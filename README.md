@@ -13,7 +13,7 @@ Once you have clone the repo, set up a clean Python 3.9 environment, either usin
 
     pip install -r requirements.txt
 
-**WARNING‼️** If you are NOT working in a Linux environment, you may have some issues with the packages **jax** and **jaxlib**, which are dependencies for the package **fuzzy-c-means**. The easiest way to workaround this issue is to uninstall these three packages, and make a clean install of fuzzy-c-means for your operative system as described in [the documentation of fuzzy-c-means](https://pypi.org/project/fuzzy-c-means/). After this, you everything should run smoothly.
+**WARNING‼️** If you are NOT working in a Linux environment, you may have some issues with the packages **jax** and **jaxlib**, which are dependencies for the package **fuzzy-c-means**. The easiest workaround this issue is to uninstall these three packages, and make a clean install of fuzzy-c-means for your operative system as described in [the documentation of fuzzy-c-means](https://pypi.org/project/fuzzy-c-means/). After this, you everything should run smoothly.
 
 As you can see in the figure above, GEnI comprises two main stages: embedding and prediction generation, and prediction explaination. While the second stage is performed intrinsically by GEnI, the first stage is external and is fully supported by PyKeen. 
 
@@ -65,7 +65,7 @@ Now that we've checked that GEnI works for a single prediction, let's try and fi
 
     python main.py -m DistMult -d nations --all
 
-As in the previous case, GEnI will output a human-readable sentence for each prediction of the dataset, and an error message otherwise. However, console outputs are fleeting, and difficult to analyze. But, don't worry! If indicated, GEnI creates a Python dictionary with all the insights about every prediction, so it can be further used or analyzed. There are much more parameters that can be specified, which can be found usin gh the *-h* flag on the script:
+As in the previous case, GEnI will output a human-readable sentence for each prediction of the dataset, and an error message otherwise. However, console outputs are fleeting, and difficult to analyze. But, don't worry! If indicated, GEnI creates a Python dictionary with all the insights about every prediction, so it can be further used or analyzed. There are many more parameters that can be specified, which can be found usin gh the *-h* flag on the script:
 
     usage: main.py [-h] [--dataset DATASET] [--model MODEL] [--threshold THRESHOLD] [--fact FACT [FACT ...]] [--goal GOAL] [--all]
                [--save] [--tmp]
