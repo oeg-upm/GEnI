@@ -3,7 +3,7 @@
 
 # 🖊 Description of the system 
 GEnI is an explainability framework, which feeds from [PyKeen](https://github.com/pykeen/pykeen) embeddings and predictions. Its **goal** is to provide **explainations and insights** for the entity predictions made by KGE models. For that purpose, a three-phase, sequential workflow is followed, which ranges from the most general feasible explaination (rules) to the most specific (influential facts detection). 
-![Overview of the GEnI workflow](https://raw.githubusercontent.com/oeg-upm/GEnI/main/figs/overview.png?token=AFM5SGM5CZXFOLDXBSOCLC3BC2A6Y)
+![Overview of the GEnI workflow](https://github.com/oeg-upm/GEnI/blob/main/figs/overview.png)
 # 🤔 How to use GEnI
 First, you should clone this GitHub repository as follows:
 
