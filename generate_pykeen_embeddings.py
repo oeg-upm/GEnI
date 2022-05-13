@@ -37,15 +37,15 @@ def generate_embeddings(model_dataset, model_name, num_epochs, dim, ratios, tmp,
 
     model = result.model
 
-    entity_embeddings: torch.FloatTensor = model.entity_embeddings(indices=None)
+    entity_embeddings: torch.FloatTensor = model.entity_representations[0]
     entity_indices = triples_factory.entity_to_id
-    entity_dict = {k: np.array(entity_embeddings[v].cpu().detach().numpy()) for k, v in entity_indices.items()}
+    entity_dict = {k: np.array(entity_embeddings(torch.tensor([v],dtype=torch.long)).cpu().detach().numpy()) for k, v in entity_indices.items()}
     save_obj(entity_dict,
              os.path.join('datasets', prefix + model_dataset, prefix + model_dataset + '_' + model_name + '_entities'))
 
-    relation_embeddings: torch.FloatTensor = model.relation_embeddings(indices=None)
+    relation_embeddings: torch.FloatTensor = model.relation_representations[0]
     relation_indices = triples_factory.relation_to_id
-    relation_dict = {k: np.array(relation_embeddings[v].cpu().detach().numpy()) for k, v in relation_indices.items()}
+    relation_dict = {k: np.array(relation_embeddings(torch.tensor([v],dtype=torch.long)).cpu().detach().numpy()) for k, v in relation_indices.items()}
     save_obj(relation_dict,
              os.path.join('datasets', prefix + model_dataset, prefix + model_dataset + '_' + model_name + '_relations'))
 
