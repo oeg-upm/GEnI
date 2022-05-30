@@ -31,7 +31,7 @@ def generate_embeddings(model_dataset, model_name, num_epochs, dim, ratios, tmp,
         training=training_factory,
         testing=testing_factory,
         validation=validation_factory,
-        model_kwargs=dict(embedding_dim=dim),
+        model_kwargs=dict(embedding_dim=dim,relation_dim=dim),
         training_kwargs=dict(num_epochs=num_epochs),
     )
 
@@ -39,13 +39,13 @@ def generate_embeddings(model_dataset, model_name, num_epochs, dim, ratios, tmp,
 
     entity_embeddings: torch.FloatTensor = model.entity_representations[0]
     entity_indices = triples_factory.entity_to_id
-    entity_dict = {k: np.array(entity_embeddings(torch.tensor([v],dtype=torch.long)).cpu().detach().numpy()) for k, v in entity_indices.items()}
+    entity_dict = {k: np.squeeze(entity_embeddings(torch.tensor([v],dtype=torch.long)).cpu().detach().numpy()) for k, v in entity_indices.items()}
     save_obj(entity_dict,
              os.path.join('datasets', prefix + model_dataset, prefix + model_dataset + '_' + model_name + '_entities'))
 
     relation_embeddings: torch.FloatTensor = model.relation_representations[0]
     relation_indices = triples_factory.relation_to_id
-    relation_dict = {k: np.array(relation_embeddings(torch.tensor([v],dtype=torch.long)).cpu().detach().numpy()) for k, v in relation_indices.items()}
+    relation_dict = {k: np.squeeze(relation_embeddings(torch.tensor([v],dtype=torch.long)).cpu().detach().numpy()) for k, v in relation_indices.items()}
     save_obj(relation_dict,
              os.path.join('datasets', prefix + model_dataset, prefix + model_dataset + '_' + model_name + '_relations'))
 

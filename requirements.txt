@@ -1,10 +1,8 @@
-
 Cython==0.29.23
 docdata==0.0.3
 fastdist==1.1.2
 fuzzy-c-means==1.4.0
 greenlet==1.1.0
-hdbscan==0.8.27
 jax==0.2.16
 jaxlib==0.1.68
 joblib==1.0.1
@@ -23,11 +21,10 @@ pandas==1.2.4
 pbr==5.6.0
 Pillow==8.2.0
 prettytable==2.1.0
-pykeen @ git+https://github.com/pykeen/pykeen.git@ba3f970ec538da70b72b6b56ceacd22d3ad08cf4
+pykeen==1.8.1
 PyYAML==5.4.1
 scikit-learn==0.24.2
-scipy==1.6.3
+scipy==1.7.0
 sklearn==0.0
-torch==1.9.0
 tqdm==4.60.0
 wcwidth==0.2.5
