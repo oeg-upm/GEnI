@@ -6,16 +6,15 @@ from pykeen.models.predict import get_tail_prediction_df, get_head_prediction_df
 import os
 from core.utils import save_obj
 import argparse
+from pykeen.evaluation import RankBasedEvaluator
 
-
-def generate_embeddings(model_dataset, model_name, num_epochs, dim, ratios, tmp, goal):
+def generate_embeddings(model_dataset, model_name, num_epochs, dim, ratios, tmp, goal,evaluate=False):
     if tmp:
         prefix = 'tmp_'
     else:
         prefix = ''
     triples_factory = get_dataset(dataset=model_dataset).training
     training_factory, testing_factory, validation_factory = triples_factory.split(ratios, random_state=1995)
-
     if not os.path.exists(os.path.join('datasets', prefix + model_dataset)):
         os.mkdir(os.path.join('datasets', prefix + model_dataset))
 
@@ -25,18 +24,41 @@ def generate_embeddings(model_dataset, model_name, num_epochs, dim, ratios, tmp,
         for f in training_factory.label_triples(triples=training_factory.mapped_triples):
             facts[f[1]].append([f[0], f[2]])
         save_obj(facts, os.path.join('datasets', prefix + model_dataset, prefix + model_dataset + '_'+model_name+ '_known_facts'))
-
-    result = pipeline(
-        model=model_name,
-        training=training_factory,
-        testing=testing_factory,
-        validation=validation_factory,
-        model_kwargs=dict(embedding_dim=dim,relation_dim=dim),
-        training_kwargs=dict(num_epochs=num_epochs),
-    )
+    if model_name!='TransR':
+        result = pipeline(
+            model=model_name,
+            training=training_factory,
+            testing=testing_factory,
+            validation=validation_factory,
+            model_kwargs=dict(embedding_dim=dim),
+            training_kwargs=dict(num_epochs=num_epochs),
+        )
+    else:
+        result = pipeline(
+            model=model_name,
+            training=training_factory,
+            testing=testing_factory,
+            validation=validation_factory,
+            model_kwargs=dict(embedding_dim=dim,relation_dim=dim),
+            training_kwargs=dict(num_epochs=num_epochs),
+        )
 
     model = result.model
-
+    if evaluate:
+        model = result.model
+        evaluator = RankBasedEvaluator()
+        test_results = evaluator.evaluate(
+            model=model,
+            mapped_triples=testing_factory.mapped_triples,
+            additional_filter_triples=[
+                training_factory.mapped_triples,
+                validation_factory.mapped_triples,
+            ],
+        )
+        mrr=test_results.get_metric('mrr')
+        hat1=test_results.get_metric('hits_at_1')
+        print('[TRAINING RESULTS] MRR: %f' %mrr)
+        print('[TRAINING RESULTS] H@1: %f' %hat1)
     entity_embeddings: torch.FloatTensor = model.entity_representations[0]
     entity_indices = triples_factory.entity_to_id
     entity_dict = {k: np.squeeze(entity_embeddings(torch.tensor([v],dtype=torch.long)).cpu().detach().numpy()) for k, v in entity_indices.items()}
@@ -53,13 +75,13 @@ def generate_embeddings(model_dataset, model_name, num_epochs, dim, ratios, tmp,
     results = {r: [] for r in testing_factory.relation_id_to_label.values()}
     for t in labelled_triples:
         if goal in ['b','o']:
-            df = get_tail_prediction_df(model, t[0], t[1], triples_factory=result.training)
+            df = get_tail_prediction_df(model, t[0], t[1], triples_factory=training_factory)
             df = df.sort_values(by=['score'], ascending=False)
             tail = df.iloc[0]['tail_label']
             del df
             results[t[1]].append(('o', t[0], tail))
         if goal in ['b','s']:
-            df = get_head_prediction_df(model, t[1], t[2], triples_factory=result.training)
+            df = get_head_prediction_df(model, t[1], t[2], triples_factory=training_factory)
             df = df.sort_values(by=['score'], ascending=False)
             head = df.iloc[0]['head_label']
             del df

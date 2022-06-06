@@ -77,8 +77,12 @@ def _phase_2(h,cur_rel,t,goal,ent_dict,rel_dict,e_clusters,known_facts,type,th_v
             correlations = [('correlation', 'direct', eval_corrs)]
             corrs = [k for k, v in eval_corrs.items() if v == 1]
             corrs = sorted(corrs, key=operator.itemgetter(2), reverse=True)
-            print('[SUCCESS!] The predicate or your fact (%s,%s) is highly correlated with the existing '
-                  'predicate (%s,%s)' % (cur_rel, t, corrs[0][1], corrs[0][0]))
+            if goal=='o':
+                print('[SUCCESS!] The predicate or your fact (%s,%s) is highly correlated with the existing '
+                      'tuple (%s,%s)' % (cur_rel, t, corrs[0][1], corrs[0][0]))
+            else:
+                print('[SUCCESS!] The predicate or your fact (%s,%s) is highly correlated with the existing '
+                      'tuple (%s,%s)' % (h, cur_rel, corrs[0][0], corrs[0][1]))
 
     if goal == 'o':
         triangular_correlations = correlation_detection.find_triangular_correlations(h, cur_rel, rel_dict,
@@ -134,7 +138,7 @@ def _generate_insight(h,cur_rel,t,goal,ent_dict,e_clusters,rel_dict,r_labels,kno
                 return influence
             else:
                 print('[FAILED!] No support for your fact could be found')
-                return [0]
+                return [('none')]
         else:
             return correlations
     else:
