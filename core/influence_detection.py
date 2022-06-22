@@ -84,7 +84,7 @@ def find_best_attack(h, t, cur_rel, ent_dict, rel_dict, facts, type):
             triples = []
             i = 0
             while (i <= len(sorted_score) - 2) and len(triples) < 3:
-                if abs(sorted_score[i][1] - sorted_score[i + 1][1]) >= 1000:
+                if abs(sorted_score[i][1] - sorted_score[i + 1][1]) >= 100:
                     triples.append(sorted_score[i][0])
                     i += 1
                 else:

@@ -8,6 +8,10 @@ from core.utils import save_obj
 import argparse
 from pykeen.evaluation import RankBasedEvaluator
 
+def _split_complex(x):
+    dim = x.shape[-1] // 2
+    return x[..., :dim], x[..., dim:]
+
 def generate_embeddings(model_dataset, model_name, num_epochs, dim, ratios, tmp, goal,evaluate=False):
     if tmp:
         prefix = 'tmp_'
@@ -50,10 +54,6 @@ def generate_embeddings(model_dataset, model_name, num_epochs, dim, ratios, tmp,
         test_results = evaluator.evaluate(
             model=model,
             mapped_triples=testing_factory.mapped_triples,
-            additional_filter_triples=[
-                training_factory.mapped_triples,
-                validation_factory.mapped_triples,
-            ],
         )
         mrr=test_results.get_metric('mrr')
         hat1=test_results.get_metric('hits_at_1')
@@ -61,13 +61,17 @@ def generate_embeddings(model_dataset, model_name, num_epochs, dim, ratios, tmp,
         print('[TRAINING RESULTS] H@1: %f' %hat1)
     entity_embeddings: torch.FloatTensor = model.entity_representations[0]
     entity_indices = triples_factory.entity_to_id
-    entity_dict = {k: np.squeeze(entity_embeddings(torch.tensor([v],dtype=torch.long)).cpu().detach().numpy()) for k, v in entity_indices.items()}
+    entity_dict = {str(k): np.squeeze(entity_embeddings(torch.tensor([v],dtype=torch.long)).cpu().detach().numpy()) for k, v in entity_indices.items()}
     save_obj(entity_dict,
              os.path.join('datasets', prefix + model_dataset, prefix + model_dataset + '_' + model_name + '_entities'))
 
     relation_embeddings: torch.FloatTensor = model.relation_representations[0]
     relation_indices = triples_factory.relation_to_id
-    relation_dict = {k: np.squeeze(relation_embeddings(torch.tensor([v],dtype=torch.long)).cpu().detach().numpy()) for k, v in relation_indices.items()}
+    if model_name=='ComplEx':
+        relation_dict = {
+            str(k): np.squeeze(relation_embeddings(torch.tensor([v], dtype=torch.long)).cpu().detach().numpy()) for k, v in relation_indices.items()}
+    else:
+        relation_dict = {str(k): _split_complex(np.squeeze(relation_embeddings(torch.tensor([v],dtype=torch.long)).cpu().detach().numpy())) for k, v in relation_indices.items()}
     save_obj(relation_dict,
              os.path.join('datasets', prefix + model_dataset, prefix + model_dataset + '_' + model_name + '_relations'))
 
@@ -75,13 +79,19 @@ def generate_embeddings(model_dataset, model_name, num_epochs, dim, ratios, tmp,
     results = {r: [] for r in testing_factory.relation_id_to_label.values()}
     for t in labelled_triples:
         if goal in ['b','o']:
-            df = get_tail_prediction_df(model, t[0], t[1], triples_factory=training_factory)
+            if t[0].isnumeric():
+                df = get_tail_prediction_df(model, int(t[0]), t[1], triples_factory=training_factory)
+            else:
+                df = get_tail_prediction_df(model, t[0], t[1], triples_factory=training_factory)
             df = df.sort_values(by=['score'], ascending=False)
             tail = df.iloc[0]['tail_label']
             del df
             results[t[1]].append(('o', t[0], tail))
         if goal in ['b','s']:
-            df = get_head_prediction_df(model, t[1], t[2], triples_factory=training_factory)
+            if t[2].isnumeric():
+                df = get_head_prediction_df(model, t[1], int(t[2]), triples_factory=training_factory)
+            else:
+                df = get_head_prediction_df(model, t[1], t[2], triples_factory=training_factory)
             df = df.sort_values(by=['score'], ascending=False)
             head = df.iloc[0]['head_label']
             del df
@@ -105,6 +115,9 @@ if __name__ == '__main__':
                                             "If no value is specified, both predictions are computed by default")
     parser.add_argument('--tmp',
                         help="Whether the generated data is permanently stored or deleted once processed. It unspecified, data is stored permantently",
+                        action="store_true")
+    parser.add_argument('--eval',
+                        help="Provide evaluation metrics",
                         action="store_true")
     args = parser.parse_args()
     dataset = args.dataset
