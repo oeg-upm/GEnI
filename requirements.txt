@@ -1,7 +1,6 @@
 Cython==0.29.23
 docdata==0.0.3
 fastdist==1.1.2
-fuzzy-c-means==1.4.0
 greenlet==1.1.0
 jax==0.2.16
 jaxlib==0.1.68
@@ -28,3 +27,5 @@ scipy==1.7.0
 sklearn==0.0
 tqdm==4.60.0
 wcwidth==0.2.5
+
+fuzzy-c-means
