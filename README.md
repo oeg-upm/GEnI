@@ -13,12 +13,12 @@ Once you have clone the repo, set up a clean Python 3.9 environment, either usin
 
     pip install -r requirements.txt
 
-**WARNING‼️** If you are NOT working in a Linux environment, you may have some issues with the packages **jax** and **jaxlib**, which are dependencies for the package **fuzzy-c-means**. The easiest workaround this issue is to uninstall these three packages, and make a clean install of fuzzy-c-means for your operative system as described in [the documentation of fuzzy-c-means](https://pypi.org/project/fuzzy-c-means/). After this, you everything should run smoothly.
+**WARNING‼️** If you are NOT working in a Linux environment, you may have some issues with the packages **jax** and **jaxlib**, which are dependencies for the package **fuzzy-c-means**. The easiest workaround this issue is to uninstall these three packages, and make a clean install of fuzzy-c-means for your operative system as described in [the documentation of fuzzy-c-means](https://pypi.org/project/fuzzy-c-means/). After this, everything should run smoothly.
 
 As you can see in the figure above, GEnI comprises two main stages: embedding and prediction generation, and prediction explaination. While the second stage is performed intrinsically by GEnI, the first stage is external and is fully supported by PyKeen. 
 
 ## ⚙️ Generating the embeddings and predictions
-A dedicated script *generate_pykeen_embeddings.py* is provided to generate GEnI compliant embeddings. However, you can also generate these embeddings directly using PyKeens source code, and perform the transformation afterwards. Nonetheless, it is easier to use the provided script. Here you have a sample execution of this script, which will generate the embeddings for the *Nations* dataset using the KGE model *TransE*. 
+A dedicated script *generate_pykeen_embeddings.py* is provided to generate GEnI compliant embeddings. However, you can also generate these embeddings directly using PyKeen's source code, and perform the transformation afterwards. Nonetheless, it is easier to use the provided script. Here you have a sample execution of this script, which will generate the embeddings for the *Nations* dataset using the KGE model *TransE*. 
 
     python generate_pykeen_embeddings.py -m TransE -d nations
 
@@ -44,7 +44,7 @@ The model and the dataset should always be specified. But don't worry, the scrip
       --tmp                 Whether the generated data is permanently stored or deleted once processed. It unspecified, data is
                             stored permantently
 
-After this execution, you'll notice that, inside the *dataset* folder, a new subfolder has appeared containing all the generated data. You can check all supported datasets and models on [PyKeen's documentation](https://pykeen.readthedocs.io/en/stable/)
+After this execution, you'll notice that, inside the *dataset* folder, a new subfolder appears containing all the generated data. You can check all supported datasets and models on [PyKeen's documentation](https://pykeen.readthedocs.io/en/stable/)
 
 ## 💬 Using GEnI to explain predictions
 With all embeddings and predictions ready, it's time to start explaining some predictions. There are two ways to perform this operation: explain a single prediction, or explain **all** of the predictions. 
@@ -65,7 +65,7 @@ Now that we've checked that GEnI works for a single prediction, let's try and fi
 
     python main.py -m DistMult -d nations --all
 
-As in the previous case, GEnI will output a human-readable sentence for each prediction of the dataset, and an error message otherwise. However, console outputs are fleeting, and difficult to analyze. But, don't worry! If indicated, GEnI creates a Python dictionary with all the insights about every prediction, so it can be further used or analyzed. There are many more parameters that can be specified, which can be found usin gh the *-h* flag on the script:
+As in the previous case, GEnI will output a human-readable sentence for each prediction of the dataset, and an error message otherwise. However, console outputs are fleeting, and difficult to analyze. But, don't worry! If indicated, GEnI creates a Python dictionary with all the insights about every prediction, so it can be further used or analyzed. There are many more parameters that can be specified, which can be found using the *-h* flag on the script:
 
     usage: main.py [-h] [--dataset DATASET] [--model MODEL] [--threshold THRESHOLD] [--fact FACT [FACT ...]] [--goal GOAL] [--all]
                [--save] [--tmp]
