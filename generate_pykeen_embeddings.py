@@ -9,6 +9,7 @@ import argparse
 from pykeen.evaluation import RankBasedEvaluator
 
 def _split_complex(x):
+    a=x.real
     dim = x.shape[-1] // 2
     return x[..., :dim], x[..., dim:]
 
@@ -61,17 +62,25 @@ def generate_embeddings(model_dataset, model_name, num_epochs, dim, ratios, tmp,
         print('[TRAINING RESULTS] H@1: %f' %hat1)
     entity_embeddings: torch.FloatTensor = model.entity_representations[0]
     entity_indices = triples_factory.entity_to_id
-    entity_dict = {str(k): np.squeeze(entity_embeddings(torch.tensor([v],dtype=torch.long)).cpu().detach().numpy()) for k, v in entity_indices.items()}
+    if model_name=='ComplEx':
+        entity_dict = {str(k): np.squeeze(entity_embeddings(torch.tensor([v], dtype=torch.long)).cpu().detach().numpy()).real
+                       for k, v in entity_indices.items()}
+    else:
+        entity_dict = {str(k): np.squeeze(entity_embeddings(torch.tensor([v],dtype=torch.long)).cpu().detach().numpy()) for k, v in entity_indices.items()}
     save_obj(entity_dict,
              os.path.join('datasets', prefix + model_dataset, prefix + model_dataset + '_' + model_name + '_entities'))
 
     relation_embeddings: torch.FloatTensor = model.relation_representations[0]
     relation_indices = triples_factory.relation_to_id
     if model_name=='ComplEx':
-        relation_dict = {
-            str(k): np.squeeze(relation_embeddings(torch.tensor([v], dtype=torch.long)).cpu().detach().numpy()) for k, v in relation_indices.items()}
+        relation_dict = {str(k):
+            np.squeeze(relation_embeddings(torch.tensor([v], dtype=torch.long)).cpu().detach().numpy()).real for k, v in
+                         relation_indices.items()}
     else:
-        relation_dict = {str(k): _split_complex(np.squeeze(relation_embeddings(torch.tensor([v],dtype=torch.long)).cpu().detach().numpy())) for k, v in relation_indices.items()}
+        relation_dict = {
+            str(k): np.squeeze(relation_embeddings(torch.tensor([v], dtype=torch.long)).cpu().detach().numpy()) for k, v
+            in relation_indices.items()}
+
     save_obj(relation_dict,
              os.path.join('datasets', prefix + model_dataset, prefix + model_dataset + '_' + model_name + '_relations'))
 
