@@ -87,4 +87,21 @@ As in the previous case, GEnI will output a human-readable sentence for each pre
                             stored permantently
 
 # 📄 How to cite GEnI
-TBD 
+
+        @article{amador_2023_geni,
+      author    = {Elvira Amador{-}Dom{\'{\i}}nguez and
+                   Emilio Serrano and
+                   Daniel Manrique},
+      title     = {GEnI: {A} framework for the generation of explanations and insights
+                   of knowledge graph embedding predictions},
+      journal   = {Neurocomputing},
+      volume    = {521},
+      pages     = {199--212},
+      year      = {2023},
+      url       = {https://doi.org/10.1016/j.neucom.2022.12.010},
+      doi       = {10.1016/j.neucom.2022.12.010},
+      timestamp = {Tue, 03 Jan 2023 15:21:14 +0100},
+      biburl    = {https://dblp.org/rec/journals/ijon/Amador-Dominguez23.bib},
+      bibsource = {dblp computer science bibliography, https://dblp.org}
+    }
+
