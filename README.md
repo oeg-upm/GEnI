@@ -1,7 +1,7 @@
 
 ![Geni Logo](https://github.com/oeg-upm/GEnI/blob/main/figs/GEnI%20logo%20background.png)
 
-# 🖊 Description of the system 
+# 🖊 Installation
 GEnI is an explainability framework, which feeds from [PyKeen](https://github.com/pykeen/pykeen) embeddings and predictions. Its **goal** is to provide **explainations and insights** for the entity predictions made by KGE models. For that purpose, a three-phase, sequential workflow is followed, which ranges from the most general feasible explaination (rules) to the most specific (influential facts detection). 
 ![Overview of the GEnI workflow](https://github.com/oeg-upm/GEnI/blob/main/figs/overview.png)
 # 🤔 How to use GEnI
@@ -105,3 +105,5 @@ As in the previous case, GEnI will output a human-readable sentence for each pre
       bibsource = {dblp computer science bibliography, https://dblp.org}
     }
 
+# 👥 Acknowledgements
+This research work has been funded by the “Universidad Politécnica de Madrid” under the program “Ayudas para Contratos Predoctorales para la Realización del Doctorado”, by the Knowledge Spaces project (Grant PID2020-118274RB-I00 funded by MCIN/AEI/ 10.13039/501100011033), and by the Autonomous Region of Madrid through the program CABAHLA-CM (GA No. P2018/TCS-4423).
